@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"web-templates/pkg/render"
 )
@@ -12,5 +11,5 @@ func Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func About(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "About Page")
+	render.RenderTemplate(w, "about.page.tmpl")
 }
