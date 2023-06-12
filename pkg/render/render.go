@@ -8,11 +8,11 @@ import (
 	"web-templates/pkg/config"
 )
 
-var app config.AppConfig
+var app *config.AppConfig
 
 // Getting app instance of struct from main package to render packege.
 // Cant make it public and use as it will give cyclic import errors.
-func NewTemplate(a config.AppConfig) {
+func NewTemplate(a *config.AppConfig) {
 	app = a
 }
 

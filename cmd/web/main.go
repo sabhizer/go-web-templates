@@ -16,7 +16,7 @@ func main() {
 
 	app := config.AppConfig{TemplateCache: tc}
 
-	render.NewTemplate(app)
+	render.NewTemplate(&app)
 
 	http.HandleFunc("/", handlers.Home)
 	http.HandleFunc("/about", handlers.About)
