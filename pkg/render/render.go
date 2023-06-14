@@ -11,17 +11,29 @@ import (
 var app *config.AppConfig
 
 // Getting app instance of struct from main package to render packege.
-// Cant make it public and use as it will give cyclic import errors.
+// Cant make app in main package public and use it here in RenderTemplate func, as it will give cyclic import errors.
 func NewTemplate(a *config.AppConfig) {
 	app = a
 }
 
 func RenderTemplate(w http.ResponseWriter, tmpl string) {
-	parsedTemplate := app.TemplateCache[tmpl]
-	err := parsedTemplate.Execute(w, nil)
-	if err != nil {
-		fmt.Println(err)
+	// if UseCache is true, then Cache is built once, and used for all page requests.
+	// Cache is not rebuilt again on every page refresh to check realtime changes to html pages.
+	if app.UseCache {
+		parsedTemplate := app.TemplateCache[tmpl]
+		err := parsedTemplate.Execute(w, nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+	} else {
+		templateMap, _ := CreateTemplateCache()
+		parsedTemplate := templateMap[tmpl]
+		err := parsedTemplate.Execute(w, nil)
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
+
 }
 
 func CreateTemplateCache() (map[string]*template.Template, error) {
