@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 	"web-templates/pkg/config"
+	"web-templates/pkg/models"
 	"web-templates/pkg/render"
 )
 
@@ -18,9 +19,11 @@ func NewRepository(a *config.AppConfig) {
 
 func (m *Respository) Home(w http.ResponseWriter, r *http.Request) {
 	//	fmt.Fprintf(w, "Home Page")
-	render.RenderTemplate(w, "home.page.tmpl")
+	render.RenderTemplate(w, "home.page.tmpl", &models.TemplateData{})
 }
 
 func (m *Respository) About(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, "about.page.tmpl")
+	stringMap := make(map[string]string)
+	stringMap["message"] = "This message comes from template data."
+	render.RenderTemplate(w, "about.page.tmpl", &models.TemplateData{StringMap: stringMap})
 }

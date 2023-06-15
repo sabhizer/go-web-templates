@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"path/filepath"
 	"web-templates/pkg/config"
+	"web-templates/pkg/models"
 )
 
 var app *config.AppConfig
@@ -16,19 +17,19 @@ func NewTemplate(a *config.AppConfig) {
 	app = a
 }
 
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
+func RenderTemplate(w http.ResponseWriter, tmpl string, data *models.TemplateData) {
 	// if UseCache is true, then Cache is built once, and used for all page requests.
 	// Cache is not rebuilt again on every page refresh to check realtime changes to html pages.
 	if app.UseCache {
 		parsedTemplate := app.TemplateCache[tmpl]
-		err := parsedTemplate.Execute(w, nil)
+		err := parsedTemplate.Execute(w, data)
 		if err != nil {
 			fmt.Println(err)
 		}
 	} else {
 		templateMap, _ := CreateTemplateCache()
 		parsedTemplate := templateMap[tmpl]
-		err := parsedTemplate.Execute(w, nil)
+		err := parsedTemplate.Execute(w, data)
 		if err != nil {
 			fmt.Println(err)
 		}
